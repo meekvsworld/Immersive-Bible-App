@@ -58,10 +58,13 @@ struct BibleTextDisplay: View {
     let verses: [String]
     let bottomPadding: CGFloat
     
-    // Use Bindings passed from parent
+    // Bindings passed from parent
     @Binding var fontSize: CGFloat
-    @Binding var useSerifFont: Bool // Keep binding if parent needs to control it
+    @Binding var useSerifFont: Bool
     @Binding var currentTheme: ReadingTheme
+    @Binding var showBookSelector: Bool
+    @Binding var selectedTranslation: String
+    @Binding var showVersionSelector: Bool
     
     // Keep local state for things only this view manages
     @State private var selectedVerseIndex: Int? = nil
@@ -75,42 +78,81 @@ struct BibleTextDisplay: View {
     private let verseBoxShadowRadius: CGFloat = 2
     private let verseBoxShadowY: CGFloat = 1
     
+    // Define the font size steps
+    let fontSizes: [CGFloat] = [16, 18, 21, 24] // Small, Medium, Large, XLarge
+    
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 0) {
-                // Top Info Bar (Progress + Verse Count)
-                HStack {
-                    ProgressView(value: scrollProgress)
-                        .progressViewStyle(.linear)
-                        .tint(currentTheme.textColor.opacity(0.5))
+                // Top Info Bar (Version | Book | Progress | Count)
+                HStack(spacing: 8) { // Reduced spacing for tighter group
+                    // Version Selector Trigger Button
+                    Button { 
+                        showVersionSelector.toggle() 
+                    } label: {
+                        Text(selectedTranslation)
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundColor(currentTheme.textColor)
+                    }
                     
+                    // Separator
+                    Text("|")
+                        .font(.system(size: 14, weight: .light))
+                        .foregroundColor(currentTheme.textColor.opacity(0.5))
+                    
+                    // Book Selector Trigger Button
+                    Button {
+                        showBookSelector.toggle()
+                    } label: {
+                        // You'll need a way to get the abbreviation for the selected book
+                        // For now, we'll hardcode "Matt" for demonstration
+                        Text("Matt") // Placeholder for book abbreviation
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundColor(currentTheme.textColor)
+                    }
+                    
+                    // REMOVED: Text Size Cycle Button
+                    // REMOVED: Theme Toggle Button (Lightbulb)
+                    
+                    // Spacer to push progress/count right
                     Spacer()
                     
+                    // Progress Bar (Takes up remaining space)
+                    ProgressView(value: scrollProgress)
+                        .progressViewStyle(.linear)
+                        .tint(Color.green)
+                    
+                    // Verse Count
                     if !verses.isEmpty {
-                        Text("Verse \(currentTopVerseIndex + 1) / \(verses.count)")
+                        Text("Verse \(currentTopVerseIndex + 1)/\(verses.count)")
                             .font(.system(size: 12))
                             .foregroundColor(currentTheme.textColor.opacity(0.7))
-                            .padding(.leading, 10)
+                            .frame(minWidth: 65, alignment: .trailing)
+                            .layoutPriority(1)
                     }
                 }
                 .padding(.horizontal)
-                .padding(.top, 5)
-                .frame(height: 20) // Give it a small fixed height
+                .padding(.vertical, 5)
+                .frame(height: 30)
                 
                 Divider().background(currentTheme.textColor.opacity(0.2))
                 
                 ScrollViewReader { scrollProxy in
                     ScrollView {
                         VStack(alignment: .leading, spacing: 0) {
-                            // Chapter Title
+                            // Chapter Title (Remove Hamburger Button Here)
                             Text(chapterTitle)
                                 .font(.system(size: fontSize + 10, weight: .bold))
                                 .frame(maxWidth: .infinity, alignment: .center)
                                 .multilineTextAlignment(.center)
+                                .foregroundColor(currentTheme.textColor)
+                                .contentShape(Rectangle())
+                                .onTapGesture {
+                                    withAnimation { showBookSelector.toggle() }
+                                }
                                 .padding(.horizontal, adaptiveHorizontalPadding(geometry.size.width))
                                 .padding(.top, 24)
                                 .padding(.bottom, 16)
-                                .foregroundColor(currentTheme.textColor)
                             
                             // Verses
                             LazyVStack(alignment: .leading, spacing: 12) { 
@@ -131,7 +173,9 @@ struct BibleTextDisplay: View {
                                             .foregroundColor(currentTheme.textColor)
                                             .frame(maxWidth: .infinity, alignment: .leading)
                                     }
-                                    .padding(12) // Padding inside the box
+                                    // Increase vertical padding by ~20% for taller cards
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 14) // Increased from 12 (12 * 1.2 = 14.4)
                                     .background(
                                         // Apply highlight color first if selected
                                         (index == selectedVerseIndex ? currentTheme.highlightColor : Color.clear)
@@ -206,6 +250,23 @@ struct BibleTextDisplay: View {
         // --- Placeholder Logic --- 
         return index == 2
     }
+    
+    private func cycleTheme() {
+        switch currentTheme {
+        case .light: currentTheme = .dark
+        case .dark: currentTheme = .light
+        case .sepia: currentTheme = .light // Example: Sepia goes back to light
+        }
+    }
+    
+    private func cycleFontSize() {
+        guard let currentIndex = fontSizes.firstIndex(of: fontSize) else {
+            fontSize = fontSizes[1] // Default to medium
+            return
+        }
+        let nextIndex = (currentIndex + 1) % fontSizes.count
+        fontSize = fontSizes[nextIndex]
+    }
 }
 
 // Data for Preview
@@ -238,14 +299,17 @@ let matthew1KJV = [
 ]
 
 #Preview {
-    StatefulPreviewWrapper_BibleText {
+    StatefulPreviewWrapper_BibleText { $fontSize, $useSerifFont, $theme, $showBookSelector, $selectedTranslation, $showVersionSelector in
         BibleTextDisplay(
             chapterTitle: "Matthew 1",
             verses: matthew1KJV,
             bottomPadding: 80,
-            fontSize: $0, // Pass binding from wrapper
-            useSerifFont: $1, // Pass binding from wrapper
-            currentTheme: $2 // Pass binding from wrapper
+            fontSize: $fontSize,
+            useSerifFont: $useSerifFont,
+            currentTheme: $theme,
+            showBookSelector: $showBookSelector,
+            selectedTranslation: $selectedTranslation,
+            showVersionSelector: $showVersionSelector
         )
     }
 }
@@ -255,9 +319,12 @@ struct StatefulPreviewWrapper_BibleText<Content: View>: View {
     @State private var fontSize: CGFloat = 18
     @State private var useSerifFont: Bool = true
     @State private var currentTheme: ReadingTheme = .light
-    var content: (Binding<CGFloat>, Binding<Bool>, Binding<ReadingTheme>) -> Content
+    @State private var showBookSelector: Bool = false
+    @State private var selectedTranslation: String = "KJV"
+    @State private var showVersionSelector: Bool = false
+    var content: (Binding<CGFloat>, Binding<Bool>, Binding<ReadingTheme>, Binding<Bool>, Binding<String>, Binding<Bool>) -> Content
 
     var body: some View {
-        content($fontSize, $useSerifFont, $currentTheme)
+        content($fontSize, $useSerifFont, $currentTheme, $showBookSelector, $selectedTranslation, $showVersionSelector)
     }
 } 

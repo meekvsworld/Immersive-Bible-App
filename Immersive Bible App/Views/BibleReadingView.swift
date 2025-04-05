@@ -15,7 +15,13 @@ struct BibleReadingView: View {
     @State private var currentTheme: ReadingTheme = .light
     @State private var fontSize: CGFloat = 18
     @State private var showSettingsMenu = false
-    @State private var settingsMenuState: SettingsMenuState = .main // Add state for menu content
+    @State private var settingsMenuState: SettingsMenuState = .main
+    @State private var showBookSelector = false
+    @State private var showVersionSelector = false // State for version selector overlay
+    
+    // Demo book list
+    let books = ["Matthew", "Mark", "Luke", "John"]
+    @State private var selectedBook = "Matthew" // Add state for selected book
     
     // Enum to manage settings menu content
     enum SettingsMenuState {
@@ -31,38 +37,52 @@ struct BibleReadingView: View {
     private let settingsButtonPadding: CGFloat = 20
     
     var body: some View {
-        ZStack {
-            // Main Content Area (Bible Text)
+        ZStack { // Main ZStack for layering
+            // Layer 1: Main Content Area (Bible Text)
             VStack(spacing: 0) {
                 // Top Nav (Still commented out for now)
                 // TopNavigationBar(...) 
                 
                 BibleTextDisplay(
-                    chapterTitle: "Matthew 1",
+                    chapterTitle: "\(selectedBook) 1",
                     verses: chapterVerses,
                     bottomPadding: settingsButtonSize + settingsButtonPadding * 2,
                     fontSize: $fontSize,
                     useSerifFont: .constant(true),
-                    currentTheme: $currentTheme
+                    currentTheme: $currentTheme,
+                    showBookSelector: $showBookSelector,
+                    selectedTranslation: $selectedTranslation,
+                    showVersionSelector: $showVersionSelector
                 )
             }
-            // Dim content when settings are shown
-            .opacity(showSettingsMenu ? 0.3 : 1.0)
-            .allowsHitTesting(!showSettingsMenu) // Disable interaction when dimmed
+            // Dim content when settings OR book selector are shown
+            .opacity(showSettingsMenu || showBookSelector ? 0.3 : 1.0)
+            .allowsHitTesting(!(showSettingsMenu || showBookSelector)) // Disable interaction when dimmed
             
-            // Dimming Layer
-            if showSettingsMenu {
+            // Layer 2: Dimming Layer (Common for both overlays)
+            if showSettingsMenu || showBookSelector || showVersionSelector {
                 Color.black.opacity(0.4)
                     .edgesIgnoringSafeArea(.all)
                     .onTapGesture { 
+                        // Dismiss whichever overlay is active
                         withAnimation { 
-                            settingsMenuState = .main // Reset state first
-                            showSettingsMenu = false 
+                            if showSettingsMenu {
+                                settingsMenuState = .main // Reset state first
+                                showSettingsMenu = false 
+                            }
+                            if showBookSelector {
+                                showBookSelector = false
+                            }
+                            if showVersionSelector {
+                                showVersionSelector = false
+                            }
                         }
                     }
+                    // Ensure dimming layer is below the menus/selectors
+                    .zIndex(0) 
             }
             
-            // Settings Gear Button Overlay
+            // Layer 3: Settings Gear Button Overlay
             VStack {
                 Spacer()
                 HStack {
@@ -73,12 +93,27 @@ struct BibleReadingView: View {
                         .padding(settingsButtonPadding)
                 }
             }
+            .zIndex(1) // Ensure button is above dimming, below menus
             
-            // Settings Menu Overlay (Pops up from bottom right-ish)
+            // Layer 4: Settings Menu Overlay
             if showSettingsMenu {
                 settingsMenuView
                     .transition(.move(edge: .bottom).combined(with: .opacity))
-                    .zIndex(1) // Ensure menu is on top
+                    .zIndex(2) // Ensure menu is on top
+            }
+            
+            // Layer 5: Book Selector Overlay
+            if showBookSelector {
+                bookSelectorView
+                    .transition(.opacity.combined(with: .scale)) 
+                    .zIndex(2)
+            }
+            
+            // Layer 6: Version Selector Overlay
+            if showVersionSelector {
+                versionSelectorView
+                    .transition(.opacity) // Simple fade for this one?
+                    .zIndex(3) // Ensure it's on top of everything else
             }
         }
         .ignoresSafeArea(.container, edges: .bottom)
@@ -123,6 +158,59 @@ struct BibleReadingView: View {
         .padding(.bottom, settingsButtonSize + settingsButtonPadding + 10)
         .padding(.trailing, settingsButtonPadding)
         .id(settingsMenuState) // Ensure transition triggers on state change
+    }
+    
+    // Book Selector View Builder
+    @ViewBuilder
+    private var bookSelectorView: some View {
+        VStack(spacing: 20) {
+            ForEach(books, id: \.self) { book in
+                Text(book)
+                    .font(.custom("Menlo-Regular", size: 20))
+                    .foregroundColor(selectedBook == book ? Color.green : Color.white)
+                    .onTapGesture {
+                        selectedBook = book
+                        // Add logic here later to load the new book/chapter data
+                        withAnimation { showBookSelector = false } // Dismiss selector
+                    }
+            }
+        }
+        // Center the VStack on the screen
+        .frame(maxWidth: .infinity, maxHeight: .infinity) 
+        // Styling (similar to settings menu but distinct?)
+        // No explicit background needed if dimming layer is used
+    }
+    
+    // Version Selector View Builder
+    @ViewBuilder
+    private var versionSelectorView: some View {
+        // Use a ZStack to layer the content over the dismissable background
+        ZStack {
+            // Semi-Transparent Background (Dismisses on tap)
+            Color.black.opacity(0.75) // Adjust opacity as desired
+                .edgesIgnoringSafeArea(.all)
+                .onTapGesture { 
+                    withAnimation { showVersionSelector = false } 
+                }
+            
+            // Content VStack
+            VStack(spacing: 20) {
+                // Example versions (adjust as needed)
+                ForEach(["KJV", "NLT", "AMP"], id: \.self) { version in 
+                    Text(version)
+                        .font(.custom("Menlo-Regular", size: 20))
+                        .foregroundColor(selectedTranslation == version ? Color.green : Color.white)
+                        .padding(.vertical, 5) // Add padding for easier tapping
+                        .contentShape(Rectangle()) // Ensure gesture covers padding
+                        .onTapGesture {
+                            selectedTranslation = version
+                            withAnimation { showVersionSelector = false } // Dismiss selector
+                        }
+                }
+            }
+            .padding(40)
+            // Center the VStack on the screen (already done by ZStack alignment)
+        }
     }
     
     // Main Settings Items View Builder
