@@ -1,0 +1,557 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		DB20BAE22DA0C5010095FA16 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DB20BAC92DA0C5000095FA16 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DB20BAD02DA0C5000095FA16;
+			remoteInfo = "Immersive Bible App";
+		};
+		DB20BAEC2DA0C5010095FA16 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DB20BAC92DA0C5000095FA16 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DB20BAD02DA0C5000095FA16;
+			remoteInfo = "Immersive Bible App";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		DB20BAD12DA0C5000095FA16 /* Immersive Bible App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Immersive Bible App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DB20BAE12DA0C5010095FA16 /* Immersive Bible AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Immersive Bible AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DB20BAEB2DA0C5010095FA16 /* Immersive Bible AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Immersive Bible AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		DB20BAD32DA0C5000095FA16 /* Immersive Bible App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Immersive Bible App";
+			sourceTree = "<group>";
+		};
+		DB20BAE42DA0C5010095FA16 /* Immersive Bible AppTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Immersive Bible AppTests";
+			sourceTree = "<group>";
+		};
+		DB20BAEE2DA0C5010095FA16 /* Immersive Bible AppUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Immersive Bible AppUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DB20BACE2DA0C5000095FA16 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DB20BADE2DA0C5010095FA16 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DB20BAE82DA0C5010095FA16 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		DB20BAC82DA0C5000095FA16 = {
+			isa = PBXGroup;
+			children = (
+				DB20BAD32DA0C5000095FA16 /* Immersive Bible App */,
+				DB20BAE42DA0C5010095FA16 /* Immersive Bible AppTests */,
+				DB20BAEE2DA0C5010095FA16 /* Immersive Bible AppUITests */,
+				DB20BAD22DA0C5000095FA16 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		DB20BAD22DA0C5000095FA16 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DB20BAD12DA0C5000095FA16 /* Immersive Bible App.app */,
+				DB20BAE12DA0C5010095FA16 /* Immersive Bible AppTests.xctest */,
+				DB20BAEB2DA0C5010095FA16 /* Immersive Bible AppUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DB20BAD02DA0C5000095FA16 /* Immersive Bible App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DB20BAF52DA0C5010095FA16 /* Build configuration list for PBXNativeTarget "Immersive Bible App" */;
+			buildPhases = (
+				DB20BACD2DA0C5000095FA16 /* Sources */,
+				DB20BACE2DA0C5000095FA16 /* Frameworks */,
+				DB20BACF2DA0C5000095FA16 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				DB20BAD32DA0C5000095FA16 /* Immersive Bible App */,
+			);
+			name = "Immersive Bible App";
+			packageProductDependencies = (
+			);
+			productName = "Immersive Bible App";
+			productReference = DB20BAD12DA0C5000095FA16 /* Immersive Bible App.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DB20BAE02DA0C5010095FA16 /* Immersive Bible AppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DB20BAF82DA0C5010095FA16 /* Build configuration list for PBXNativeTarget "Immersive Bible AppTests" */;
+			buildPhases = (
+				DB20BADD2DA0C5010095FA16 /* Sources */,
+				DB20BADE2DA0C5010095FA16 /* Frameworks */,
+				DB20BADF2DA0C5010095FA16 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DB20BAE32DA0C5010095FA16 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				DB20BAE42DA0C5010095FA16 /* Immersive Bible AppTests */,
+			);
+			name = "Immersive Bible AppTests";
+			packageProductDependencies = (
+			);
+			productName = "Immersive Bible AppTests";
+			productReference = DB20BAE12DA0C5010095FA16 /* Immersive Bible AppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		DB20BAEA2DA0C5010095FA16 /* Immersive Bible AppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DB20BAFB2DA0C5010095FA16 /* Build configuration list for PBXNativeTarget "Immersive Bible AppUITests" */;
+			buildPhases = (
+				DB20BAE72DA0C5010095FA16 /* Sources */,
+				DB20BAE82DA0C5010095FA16 /* Frameworks */,
+				DB20BAE92DA0C5010095FA16 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DB20BAED2DA0C5010095FA16 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				DB20BAEE2DA0C5010095FA16 /* Immersive Bible AppUITests */,
+			);
+			name = "Immersive Bible AppUITests";
+			packageProductDependencies = (
+			);
+			productName = "Immersive Bible AppUITests";
+			productReference = DB20BAEB2DA0C5010095FA16 /* Immersive Bible AppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DB20BAC92DA0C5000095FA16 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					DB20BAD02DA0C5000095FA16 = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					DB20BAE02DA0C5010095FA16 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = DB20BAD02DA0C5000095FA16;
+					};
+					DB20BAEA2DA0C5010095FA16 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = DB20BAD02DA0C5000095FA16;
+					};
+				};
+			};
+			buildConfigurationList = DB20BACC2DA0C5000095FA16 /* Build configuration list for PBXProject "Immersive Bible App" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = DB20BAC82DA0C5000095FA16;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = DB20BAD22DA0C5000095FA16 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DB20BAD02DA0C5000095FA16 /* Immersive Bible App */,
+				DB20BAE02DA0C5010095FA16 /* Immersive Bible AppTests */,
+				DB20BAEA2DA0C5010095FA16 /* Immersive Bible AppUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DB20BACF2DA0C5000095FA16 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DB20BADF2DA0C5010095FA16 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DB20BAE92DA0C5010095FA16 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DB20BACD2DA0C5000095FA16 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DB20BADD2DA0C5010095FA16 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DB20BAE72DA0C5010095FA16 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DB20BAE32DA0C5010095FA16 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DB20BAD02DA0C5000095FA16 /* Immersive Bible App */;
+			targetProxy = DB20BAE22DA0C5010095FA16 /* PBXContainerItemProxy */;
+		};
+		DB20BAED2DA0C5010095FA16 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DB20BAD02DA0C5000095FA16 /* Immersive Bible App */;
+			targetProxy = DB20BAEC2DA0C5010095FA16 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		DB20BAF32DA0C5010095FA16 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		DB20BAF42DA0C5010095FA16 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		DB20BAF62DA0C5010095FA16 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Immersive Bible App/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "MeekvsWorld.Immersive-Bible-App";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		DB20BAF72DA0C5010095FA16 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Immersive Bible App/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "MeekvsWorld.Immersive-Bible-App";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		DB20BAF92DA0C5010095FA16 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "MeekvsWorld.Immersive-Bible-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Immersive Bible App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Immersive Bible App";
+			};
+			name = Debug;
+		};
+		DB20BAFA2DA0C5010095FA16 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "MeekvsWorld.Immersive-Bible-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Immersive Bible App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Immersive Bible App";
+			};
+			name = Release;
+		};
+		DB20BAFC2DA0C5010095FA16 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "MeekvsWorld.Immersive-Bible-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Immersive Bible App";
+			};
+			name = Debug;
+		};
+		DB20BAFD2DA0C5010095FA16 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "MeekvsWorld.Immersive-Bible-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Immersive Bible App";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DB20BACC2DA0C5000095FA16 /* Build configuration list for PBXProject "Immersive Bible App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DB20BAF32DA0C5010095FA16 /* Debug */,
+				DB20BAF42DA0C5010095FA16 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DB20BAF52DA0C5010095FA16 /* Build configuration list for PBXNativeTarget "Immersive Bible App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DB20BAF62DA0C5010095FA16 /* Debug */,
+				DB20BAF72DA0C5010095FA16 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DB20BAF82DA0C5010095FA16 /* Build configuration list for PBXNativeTarget "Immersive Bible AppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DB20BAF92DA0C5010095FA16 /* Debug */,
+				DB20BAFA2DA0C5010095FA16 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DB20BAFB2DA0C5010095FA16 /* Build configuration list for PBXNativeTarget "Immersive Bible AppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DB20BAFC2DA0C5010095FA16 /* Debug */,
+				DB20BAFD2DA0C5010095FA16 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DB20BAC92DA0C5000095FA16 /* Project object */;
+}
