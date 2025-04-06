@@ -17,11 +17,10 @@ struct VerseActionFooter: View {
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 20) {
-                // Display selected count (optional)
+                // Display selected count
                 Text("\(selectedCount) Selected")
                     .font(.system(size: 14, weight: .medium))
                     .foregroundColor(.primary)
-                    .padding(.leading)
                 
                 // Action Buttons
                 ForEach(VerseActionType.allCases) { actionType in
@@ -37,12 +36,10 @@ struct VerseActionFooter: View {
                         .frame(width: buttonSize + 15, height: buttonSize) // Adjust width for text
                         .foregroundColor(.primary)
                     }
-                    .padding(buttonPadding)
-                    // Add subtle background/highlight on tap if desired
-                    // .background(.ultraThickMaterial, in: RoundedRectangle(cornerRadius: 8))
                 }
             }
             .padding(.vertical, 5)
+            .padding(.horizontal, 35) // Increased explicit padding significantly
         }
         .frame(height: 80) // Increased height from 60 to 80
         .background(.thinMaterial) // Use a material background
