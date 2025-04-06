@@ -73,9 +73,8 @@ struct BibleTextDisplay: View {
     
     // Constants for Verse Styling
     private let verseNumberFontSize: CGFloat = 11
-    // private let verseNumberWidth: CGFloat = 25
-    private let verseNumberLeadingPadding: CGFloat = 1 // This constant is currently unused for positioning
-    private let verseNumberReservedWidth: CGFloat = 25 // Revert to 25 for more space
+    private let verseNumberLeadingPadding: CGFloat = 1 // Unused for positioning
+    private let verseNumberReservedWidth: CGFloat = 25 // Ensure this is 25
     private let verseBoxCornerRadius: CGFloat = 8
     private let verseBoxShadowRadius: CGFloat = 2
     private let verseBoxShadowY: CGFloat = 1
@@ -159,35 +158,32 @@ struct BibleTextDisplay: View {
                             // Verses
                             LazyVStack(alignment: .leading, spacing: 12) {
                                 ForEach(Array(verses.enumerated()), id: \.offset) { index, verse in
-                                    // Use ZStack for layering number and card
-                                    ZStack(alignment: .leading) { // Align content to leading edge
-                                        // Layer 1: Verse Number (Positioned within reserved width, no extra leading pad)
+                                    ZStack(alignment: .leading) {
+                                        // Layer 1: Verse Number
                                         Text("\(index + 1)")
                                             .font(.system(size: verseNumberFontSize))
                                             .foregroundColor(currentTheme.verseNumberColor)
-                                            .frame(width: verseNumberReservedWidth, alignment: .leading) // Positioned left within reserved width
-                                            .padding(.top, 14) // Keep vertical alignment consistent
+                                            .frame(width: verseNumberReservedWidth, alignment: .leading) // Use constant
+                                            .padding(.top, 14)
                                             
-                                        // Layer 2: Verse Text Card (Starts at leading edge of ZStack)
+                                        // Layer 2: Verse Text Card
                                         Text(verse)
                                             .font(fontForCurrentStyle())
                                             .tracking(calculatedTracking())
                                             .lineSpacing(calculatedLineSpacing())
                                             .foregroundColor(currentTheme.textColor)
                                             .multilineTextAlignment(.center)
-                                            .padding(.horizontal, 12) // Internal padding
-                                            .padding(.vertical, 14)   // Internal padding
-                                            .frame(maxWidth: .infinity) // Allow card to take full width
+                                            .padding(.horizontal, 12)
+                                            .padding(.vertical, 14)
+                                            .frame(maxWidth: .infinity, alignment: .center)
                                             .background(
                                                 (index == selectedVerseIndex ? currentTheme.highlightColor : Color.clear)
                                                     .background(currentTheme.verseBoxBackgroundColor)
                                             )
                                             .cornerRadius(verseBoxCornerRadius)
                                             .shadow(color: Color.black.opacity(0.15), radius: verseBoxShadowRadius, x: 0, y: verseBoxShadowY)
-                                            // Add back leading padding to push card away from number area
-                                            .padding(.leading, verseNumberReservedWidth) 
+                                            .padding(.leading, verseNumberReservedWidth)
                                     }
-                                    // Tap Gesture, ID, Paragraph Padding remain on the ZStack
                                     .contentShape(Rectangle())
                                     .onTapGesture { selectedVerseIndex = (selectedVerseIndex == index) ? nil : index }
                                     .id(index)
@@ -196,7 +192,6 @@ struct BibleTextDisplay: View {
                             }
                             .padding(.horizontal, adaptiveHorizontalPadding(geometry.size.width))
                             .padding(.bottom, bottomPadding)
-                            // Geometry Reader for Scroll Progress & Verse Tracking
                             .background(
                                 GeometryReader { contentGeo -> Color in
                                     DispatchQueue.main.async {
@@ -245,8 +240,8 @@ struct BibleTextDisplay: View {
     }
     
     private func adaptiveHorizontalPadding(_ width: CGFloat) -> CGFloat {
-        // Reduce minimum padding to move content closer to edges
-        return max(8, width * 0.05) // Changed 15 to 8
+        // Ensure minimum padding is 8
+        return max(8, width * 0.05)
     }
     
     private func isNewParagraph(_ index: Int) -> Bool {
