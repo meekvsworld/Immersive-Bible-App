@@ -19,6 +19,8 @@ struct BibleReadingView: View {
     @State private var showBookSelector = false
     @State private var showVersionSelector = false // State for version selector overlay
     @State private var selectedVerseIndices: Set<Int> = [] // State for multiple selections
+    @State private var showContextModal = false // Add state for context modal
+    @State private var showNotesModal = false // State for notes modal
     
     // Demo book list
     let books = ["Matthew", "Mark", "Luke", "John"]
@@ -61,6 +63,14 @@ struct BibleReadingView: View {
             // Dim content when settings OR book selector are shown
             .opacity(showSettingsMenu || showBookSelector || showVersionSelector ? 0.3 : 1.0)
             .allowsHitTesting(!(showSettingsMenu || showBookSelector || showVersionSelector)) // Disable interaction when dimmed
+            .contentShape(Rectangle()) // Make the entire VStack area tappable
+            .onTapGesture { // Tap outside verses
+                if !selectedVerseIndices.isEmpty {
+                    withAnimation {
+                        selectedVerseIndices.removeAll()
+                    }
+                }
+            }
             
             // Layer 2: Dimming Layer (Common for both overlays)
             if showSettingsMenu || showBookSelector || showVersionSelector {
@@ -127,16 +137,40 @@ struct BibleReadingView: View {
             VStack {
                 Spacer()
                 if !selectedVerseIndices.isEmpty {
-                    VerseActionFooter(selectedCount: selectedVerseIndices.count) { actionType in
+                    VerseActionFooter(selectedCount: selectedVerseIndices.count, actionHandler: { actionType in
                         // Handle footer actions here
                         handleVerseAction(actionType)
-                    }
+                    }, deselectAllAction: { // Pass the deselect action
+                        withAnimation {
+                            selectedVerseIndices.removeAll()
+                        }
+                    })
                     .frame(height: verseFooterHeight) // Give footer fixed height
                     .transition(.move(edge: .bottom).combined(with: .opacity))
                     .zIndex(1) // Ensure it's above content, below overlays
                 }
             }
             .ignoresSafeArea(.container, edges: .bottom) // Allow footer into safe area
+            
+            // Layer 8: Context Modal (NEW)
+            if showContextModal {
+                ContextModalView(contextData: sampleMatthew1Context, isPresented: $showContextModal)
+                    .transition(.move(edge: .bottom))
+                    .zIndex(4) // Highest zIndex
+                }
+            
+            // Layer 9: Notes Modal (NEW)
+            if showNotesModal {
+                NotesModalView(
+                    bookName: selectedBook,
+                    chapterNumber: 1, // Replace with dynamic chapter later
+                    selectedIndices: selectedVerseIndices.sorted(), // Pass sorted indices
+                    allVerses: chapterVerses,
+                    isPresented: $showNotesModal
+                )
+                .transition(.move(edge: .bottom)) // Or another transition
+                .zIndex(5) // Ensure it's on top
+            }
         }
     }
     
@@ -275,14 +309,21 @@ struct BibleReadingView: View {
     private func handleVerseAction(_ action: VerseActionType) {
         print("Action tapped: \(action) for indices: \(selectedVerseIndices)")
         // Add logic for Save, Note, Copy, Share, etc.
-        // Example: Copy
-        if action == .copy {
+        switch action {
+        case .copy:
             let selectedTexts = selectedVerseIndices.sorted().map { index in
                 guard index < chapterVerses.count else { return "" }
                 return "\(selectedBook) 1:\(index + 1) \(chapterVerses[index])"
             }.joined(separator: "\n")
             UIPasteboard.general.string = selectedTexts
             print("Copied: \(selectedTexts)")
+        case .context:
+            withAnimation { showContextModal = true }
+        case .note:
+            // Show the notes modal - ensure data is passed if needed
+            withAnimation { showNotesModal = true }
+        default:
+            print("Action \(action.rawValue) not yet implemented.")
         }
     }
 }

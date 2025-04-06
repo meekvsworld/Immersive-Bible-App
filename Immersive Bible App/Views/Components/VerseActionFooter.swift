@@ -10,9 +10,9 @@ import SwiftUI
 struct VerseActionFooter: View {
     let selectedCount: Int
     let actionHandler: (VerseActionType) -> Void
+    let deselectAllAction: () -> Void
     
     private let buttonSize: CGFloat = 40
-    private let buttonPadding: CGFloat = 5
     
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -21,6 +21,14 @@ struct VerseActionFooter: View {
                 Text("\(selectedCount) Selected")
                     .font(.system(size: 14, weight: .medium))
                     .foregroundColor(.primary)
+                
+                // Deselect Button
+                Button(action: deselectAllAction) {
+                    Text("Deselect")
+                        .font(.system(size: 14, weight: .medium))
+                        .underline()
+                        .foregroundColor(.primary)
+                }
                 
                 // Action Buttons
                 ForEach(VerseActionType.allCases) { actionType in
@@ -33,17 +41,17 @@ struct VerseActionFooter: View {
                             Text(actionType.rawValue)
                                 .font(.system(size: 10))
                         }
-                        .frame(width: buttonSize + 15, height: buttonSize) // Adjust width for text
+                        .frame(width: buttonSize + 15, height: buttonSize)
                         .foregroundColor(.primary)
                     }
                 }
             }
             .padding(.vertical, 5)
-            .padding(.horizontal, 35) // Increased explicit padding significantly
+            .padding(.horizontal, 35)
         }
-        .frame(height: 80) // Increased height from 60 to 80
-        .background(.thinMaterial) // Use a material background
-        .cornerRadius(15, corners: [.topLeft, .topRight]) // Optional rounding
+        .frame(height: 80)
+        .background(.thinMaterial)
+        .cornerRadius(15, corners: [.topLeft, .topRight])
         .shadow(radius: 3)
     }
 }
@@ -65,13 +73,14 @@ struct RoundedCorner: Shape {
     }
 }
 
-
 #Preview {
     VStack {
         Spacer()
-        VerseActionFooter(selectedCount: 3) { action in
+        VerseActionFooter(selectedCount: 3, actionHandler: { action in
             print("Preview action: \(action)")
-        }
+        }, deselectAllAction: { 
+            print("Preview deselect all")
+        })
     }
-    .background(Color.blue) // Add background to see footer
+    .background(Color.blue)
 } 
