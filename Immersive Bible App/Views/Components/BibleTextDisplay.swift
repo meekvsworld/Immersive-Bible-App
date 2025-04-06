@@ -38,9 +38,9 @@ enum ReadingTheme {
     
     var verseNumberColor: Color {
         switch self {
-        case .light: return Color.gray.opacity(0.8)
-        case .dark: return Color.gray
-        case .sepia: return Color(red: 0.5, green: 0.4, blue: 0.3)
+        case .light: return Color.gray
+        case .dark: return Color(white: 0.6)
+        case .sepia: return Color(red: 0.4, green: 0.3, blue: 0.2)
         }
     }
     
@@ -73,7 +73,9 @@ struct BibleTextDisplay: View {
     
     // Constants for Verse Styling
     private let verseNumberFontSize: CGFloat = 11
-    private let verseNumberWidth: CGFloat = 25
+    // private let verseNumberWidth: CGFloat = 25
+    private let verseNumberLeadingPadding: CGFloat = 1 // This constant is currently unused for positioning
+    private let verseNumberReservedWidth: CGFloat = 25 // Revert to 25 for more space
     private let verseBoxCornerRadius: CGFloat = 8
     private let verseBoxShadowRadius: CGFloat = 2
     private let verseBoxShadowY: CGFloat = 1
@@ -155,41 +157,41 @@ struct BibleTextDisplay: View {
                                 .padding(.bottom, 16)
                             
                             // Verses
-                            LazyVStack(alignment: .leading, spacing: 12) { 
+                            LazyVStack(alignment: .leading, spacing: 12) {
                                 ForEach(Array(verses.enumerated()), id: \.offset) { index, verse in
-                                    // Verse Box Container
-                                    HStack(alignment: .top, spacing: 8) {
-                                        // Verse Number
+                                    // Use ZStack for layering number and card
+                                    ZStack(alignment: .leading) { // Align content to leading edge
+                                        // Layer 1: Verse Number (Positioned within reserved width, no extra leading pad)
                                         Text("\(index + 1)")
                                             .font(.system(size: verseNumberFontSize))
                                             .foregroundColor(currentTheme.verseNumberColor)
-                                            .frame(width: verseNumberWidth, alignment: .leading)
-                                            .padding(.top, fontSize * 0.15)
-                                        
-                                        // Verse Text
+                                            .frame(width: verseNumberReservedWidth, alignment: .leading) // Positioned left within reserved width
+                                            .padding(.top, 14) // Keep vertical alignment consistent
+                                            
+                                        // Layer 2: Verse Text Card (Starts at leading edge of ZStack)
                                         Text(verse)
                                             .font(fontForCurrentStyle())
                                             .tracking(calculatedTracking())
+                                            .lineSpacing(calculatedLineSpacing())
                                             .foregroundColor(currentTheme.textColor)
-                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                            .multilineTextAlignment(.center)
+                                            .padding(.horizontal, 12) // Internal padding
+                                            .padding(.vertical, 14)   // Internal padding
+                                            .frame(maxWidth: .infinity) // Allow card to take full width
+                                            .background(
+                                                (index == selectedVerseIndex ? currentTheme.highlightColor : Color.clear)
+                                                    .background(currentTheme.verseBoxBackgroundColor)
+                                            )
+                                            .cornerRadius(verseBoxCornerRadius)
+                                            .shadow(color: Color.black.opacity(0.15), radius: verseBoxShadowRadius, x: 0, y: verseBoxShadowY)
+                                            // Add back leading padding to push card away from number area
+                                            .padding(.leading, verseNumberReservedWidth) 
                                     }
-                                    // Increase vertical padding by ~20% for taller cards
-                                    .padding(.horizontal, 12)
-                                    .padding(.vertical, 14) // Increased from 12 (12 * 1.2 = 14.4)
-                                    .background(
-                                        // Apply highlight color first if selected
-                                        (index == selectedVerseIndex ? currentTheme.highlightColor : Color.clear)
-                                            // Then apply the box background color over it
-                                            .background(currentTheme.verseBoxBackgroundColor)
-                                    )
-                                    .cornerRadius(verseBoxCornerRadius)
-                                    .shadow(color: Color.black.opacity(0.1), radius: verseBoxShadowRadius, x: 0, y: verseBoxShadowY)
-                                    .contentShape(Rectangle()) // Make tappable
-                                    .onTapGesture {
-                                        selectedVerseIndex = (selectedVerseIndex == index) ? nil : index
-                                    }
-                                    .id(index) // ID for ScrollViewReader
-                                    .padding(.top, isNewParagraph(index) ? 10 : 0) // Add space before paragraph starts
+                                    // Tap Gesture, ID, Paragraph Padding remain on the ZStack
+                                    .contentShape(Rectangle())
+                                    .onTapGesture { selectedVerseIndex = (selectedVerseIndex == index) ? nil : index }
+                                    .id(index)
+                                    .padding(.top, isNewParagraph(index) ? 10 : 0)
                                 }
                             }
                             .padding(.horizontal, adaptiveHorizontalPadding(geometry.size.width))
@@ -235,7 +237,7 @@ struct BibleTextDisplay: View {
     }
     
     private func calculatedLineSpacing() -> CGFloat {
-        return fontSize * 0.5
+        return fontSize * 0.45
     }
     
     private func calculatedTracking() -> CGFloat {
@@ -243,7 +245,8 @@ struct BibleTextDisplay: View {
     }
     
     private func adaptiveHorizontalPadding(_ width: CGFloat) -> CGFloat {
-        return max(15, width * 0.05)
+        // Reduce minimum padding to move content closer to edges
+        return max(8, width * 0.05) // Changed 15 to 8
     }
     
     private func isNewParagraph(_ index: Int) -> Bool {
