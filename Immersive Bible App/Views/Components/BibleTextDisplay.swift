@@ -65,9 +65,9 @@ struct BibleTextDisplay: View {
     @Binding var showBookSelector: Bool
     @Binding var selectedTranslation: String
     @Binding var showVersionSelector: Bool
+    @Binding var selectedVerseIndices: Set<Int>
     
     // Keep local state for things only this view manages
-    @State private var selectedVerseIndex: Int? = nil
     @State private var scrollProgress: CGFloat = 0
     @State private var currentTopVerseIndex: Int = 0
     
@@ -177,7 +177,7 @@ struct BibleTextDisplay: View {
                                             .padding(.vertical, 14)
                                             .frame(maxWidth: .infinity, alignment: .center)
                                             .background(
-                                                (index == selectedVerseIndex ? currentTheme.highlightColor : Color.clear)
+                                                (selectedVerseIndices.contains(index) ? currentTheme.highlightColor : Color.clear)
                                                     .background(currentTheme.verseBoxBackgroundColor)
                                             )
                                             .cornerRadius(verseBoxCornerRadius)
@@ -185,7 +185,13 @@ struct BibleTextDisplay: View {
                                             .padding(.leading, verseNumberReservedWidth)
                                     }
                                     .contentShape(Rectangle())
-                                    .onTapGesture { selectedVerseIndex = (selectedVerseIndex == index) ? nil : index }
+                                    .onTapGesture { 
+                                        if selectedVerseIndices.contains(index) {
+                                            selectedVerseIndices.remove(index)
+                                        } else {
+                                            selectedVerseIndices.insert(index)
+                                        }
+                                    }
                                     .id(index)
                                     .padding(.top, isNewParagraph(index) ? 10 : 0)
                                 }
@@ -297,7 +303,7 @@ let matthew1KJV = [
 ]
 
 #Preview {
-    StatefulPreviewWrapper_BibleText { $fontSize, $useSerifFont, $theme, $showBookSelector, $selectedTranslation, $showVersionSelector in
+    StatefulPreviewWrapper_BibleText { $fontSize, $useSerifFont, $theme, $showBookSelector, $selectedTranslation, $showVersionSelector, $selectedVerseIndices in
         BibleTextDisplay(
             chapterTitle: "Matthew 1",
             verses: matthew1KJV,
@@ -307,7 +313,8 @@ let matthew1KJV = [
             currentTheme: $theme,
             showBookSelector: $showBookSelector,
             selectedTranslation: $selectedTranslation,
-            showVersionSelector: $showVersionSelector
+            showVersionSelector: $showVersionSelector,
+            selectedVerseIndices: $selectedVerseIndices
         )
     }
 }
@@ -320,9 +327,10 @@ struct StatefulPreviewWrapper_BibleText<Content: View>: View {
     @State private var showBookSelector: Bool = false
     @State private var selectedTranslation: String = "KJV"
     @State private var showVersionSelector: Bool = false
-    var content: (Binding<CGFloat>, Binding<Bool>, Binding<ReadingTheme>, Binding<Bool>, Binding<String>, Binding<Bool>) -> Content
+    @State private var selectedVerseIndices: Set<Int> = []
+    var content: (Binding<CGFloat>, Binding<Bool>, Binding<ReadingTheme>, Binding<Bool>, Binding<String>, Binding<Bool>, Binding<Set<Int>>) -> Content
 
     var body: some View {
-        content($fontSize, $useSerifFont, $currentTheme, $showBookSelector, $selectedTranslation, $showVersionSelector)
+        content($fontSize, $useSerifFont, $currentTheme, $showBookSelector, $selectedTranslation, $showVersionSelector, $selectedVerseIndices)
     }
 } 
