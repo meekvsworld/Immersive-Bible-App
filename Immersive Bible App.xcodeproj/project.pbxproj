@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		DB9D3AC52DA2437700228A58 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = DB9D3AC42DA2437700228A58 /* Supabase */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		DB20BAE22DA0C5010095FA16 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB9D3AC52DA2437700228A58 /* Supabase in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,7 @@
 				DB20BAD32DA0C5000095FA16 /* Immersive Bible App */,
 				DB20BAE42DA0C5010095FA16 /* Immersive Bible AppTests */,
 				DB20BAEE2DA0C5010095FA16 /* Immersive Bible AppUITests */,
+				DB9D3AC32DA2436100228A58 /* Frameworks */,
 				DB20BAD22DA0C5000095FA16 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -90,6 +96,13 @@
 				DB20BAEB2DA0C5010095FA16 /* Immersive Bible AppUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		DB9D3AC32DA2436100228A58 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -112,6 +125,7 @@
 			);
 			name = "Immersive Bible App";
 			packageProductDependencies = (
+				DB9D3AC42DA2437700228A58 /* Supabase */,
 			);
 			productName = "Immersive Bible App";
 			productReference = DB20BAD12DA0C5000095FA16 /* Immersive Bible App.app */;
@@ -195,6 +209,9 @@
 			);
 			mainGroup = DB20BAC82DA0C5000095FA16;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				DBA00EA12DA2421F002F57D1 /* XCRemoteSwiftPackageReference "supabase-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = DB20BAD22DA0C5000095FA16 /* Products */;
 			projectDirPath = "";
@@ -552,6 +569,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		DBA00EA12DA2421F002F57D1 /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase-community/supabase-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DB9D3AC42DA2437700228A58 /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DBA00EA12DA2421F002F57D1 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = DB20BAC92DA0C5000095FA16 /* Project object */;
 }

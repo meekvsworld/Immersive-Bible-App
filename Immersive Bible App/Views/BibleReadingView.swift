@@ -22,9 +22,31 @@ struct BibleReadingView: View {
     @State private var showContextModal = false // Add state for context modal
     @State private var showNotesModal = false // State for notes modal
     
+    // Enum to manage book selector stage
+    enum BookSelectorState {
+        case showingBooks
+        case showingChapters
+    }
+    @State private var bookSelectorState: BookSelectorState = .showingBooks
+    @State private var selectedChapter: Int = 1 // Add state for selected chapter
+    
     // Demo book list
     let books = ["Matthew", "Mark", "Luke", "John"]
     @State private var selectedBook = "Matthew" // Add state for selected book
+    
+    // Demo data (Replace with real data source later)
+    let chaptersPerBook: [String: Int] = [
+        "Matthew": 28,
+        "Mark": 16,
+        "Luke": 24,
+        "John": 21
+    ]
+    let bookAbbreviations: [String: String] = [
+        "Matthew": "Matt",
+        "Mark": "Mark",
+        "Luke": "Luke",
+        "John": "John"
+    ]
     
     // Enum to manage settings menu content
     enum SettingsMenuState {
@@ -32,13 +54,15 @@ struct BibleReadingView: View {
         case versionSelect
     }
     
-    // Use the full chapter text
-    let chapterVerses = matthew1KJV
-    
     // Define Button size for padding calculation
     private let settingsButtonSize: CGFloat = 55
     private let settingsButtonPadding: CGFloat = 20
     private let verseFooterHeight: CGFloat = 80 // Updated height to match footer
+    
+    // Add state variable to hold the fetched BibleVerse objects
+    @State private var currentVerses: [BibleVerse] = []
+    @State private var isLoadingVerses: Bool = false // Optional: To show a loading indicator
+    @State private var fetchError: String? = nil // Optional: To display errors
     
     var body: some View {
         ZStack { // Main ZStack for layering
@@ -48,16 +72,18 @@ struct BibleReadingView: View {
                 // TopNavigationBar(...) 
                 
                 BibleTextDisplay(
-                    chapterTitle: "\(selectedBook) 1",
-                    verses: chapterVerses,
-                    bottomPadding: calculateBottomPadding(),
+                    chapterTitle: "\(selectedBook) \(selectedChapter)",
+                    verses: currentVerses,
+                    bottomPadding: !selectedVerseIndices.isEmpty ? verseFooterHeight : 0,
                     fontSize: $fontSize,
                     useSerifFont: .constant(true),
                     currentTheme: $currentTheme,
                     showBookSelector: $showBookSelector,
                     selectedTranslation: $selectedTranslation,
                     showVersionSelector: $showVersionSelector,
-                    selectedVerseIndices: $selectedVerseIndices
+                    selectedVerseIndices: $selectedVerseIndices,
+                    selectedBook: $selectedBook,
+                    bookAbbreviations: bookAbbreviations
                 )
             }
             // Dim content when settings OR book selector are shown
@@ -163,13 +189,30 @@ struct BibleReadingView: View {
             if showNotesModal {
                 NotesModalView(
                     bookName: selectedBook,
-                    chapterNumber: 1, // Replace with dynamic chapter later
+                    chapterNumber: selectedChapter, // Use dynamic chapter
                     selectedIndices: selectedVerseIndices.sorted(), // Pass sorted indices
-                    allVerses: chapterVerses,
+                    allVerses: currentVerses.map { $0.verseText }, // Extract just the text strings
                     isPresented: $showNotesModal
                 )
                 .transition(.move(edge: .bottom)) // Or another transition
                 .zIndex(5) // Ensure it's on top
+            }
+        }
+        .onAppear {
+            // *** Call loadVerses when the view first appears ***
+            Task {
+                await loadVerses()
+            }
+        }
+        // *** Add onChange modifiers to refetch when selection changes ***
+        .onChange(of: selectedBook) { _, _ in
+            Task {
+                await loadVerses()
+            }
+        }
+        .onChange(of: selectedChapter) { _, _ in
+             Task {
+                await loadVerses()
             }
         }
     }
@@ -218,22 +261,71 @@ struct BibleReadingView: View {
     // Book Selector View Builder
     @ViewBuilder
     private var bookSelectorView: some View {
-        VStack(spacing: 20) {
-            ForEach(books, id: \.self) { book in
-                Text(book)
-                    .font(.custom("Menlo-Regular", size: 20))
-                    .foregroundColor(selectedBook == book ? Color.green : Color.white)
-                    .onTapGesture {
-                        selectedBook = book
-                        // Add logic here later to load the new book/chapter data
-                        withAnimation { showBookSelector = false } // Dismiss selector
+        // Use a ZStack for dismissable background
+        ZStack {
+            // Semi-Transparent Background (Dismisses on tap)
+            Color.black.opacity(0.75)
+                .edgesIgnoringSafeArea(.all)
+                .onTapGesture { 
+                    withAnimation { 
+                        showBookSelector = false
+                        // Reset state when dismissing
+                        bookSelectorState = .showingBooks 
                     }
+                }
+            
+            // Main Selector Content (Centered)
+            VStack(spacing: 20) {
+                if bookSelectorState == .showingBooks {
+                    // Book List
+                    ForEach(books, id: \.self) { book in
+                        Text(book)
+                            .font(.custom("Menlo-Regular", size: 20))
+                            .foregroundColor(selectedBook == book ? Color.green : Color.white)
+                            .onTapGesture {
+                                selectedBook = book
+                                withAnimation { bookSelectorState = .showingChapters } // Go to chapters
+                            }
+                    }
+                } else if bookSelectorState == .showingChapters {
+                    // Chapter Grid (or List)
+                    // Header
+                    Text("Chapters for \(selectedBook)")
+                        .font(.custom("Menlo-Regular", size: 22).bold())
+                        .foregroundColor(.white)
+                        .padding(.bottom)
+                    
+                    // Example using LazyVGrid
+                    let chapterCount = chaptersPerBook[selectedBook] ?? 0
+                    let columns = Array(repeating: GridItem(.flexible()), count: 5) // Fixed columns
+                    
+                    LazyVGrid(columns: columns, spacing: 15) {
+                        ForEach(1...chapterCount, id: \.self) { chapter in
+                            Text("\(chapter)")
+                                .font(.custom("Menlo-Regular", size: 18))
+                                .frame(width: 50, height: 50)
+                                .background(selectedChapter == chapter ? Color.green.opacity(0.3) : Color.gray.opacity(0.2))
+                                .cornerRadius(8)
+                                .foregroundColor(selectedChapter == chapter ? Color.green : Color.white)
+                                .onTapGesture {
+                                    selectedChapter = chapter
+                                    withAnimation { 
+                                        showBookSelector = false // Dismiss selector
+                                        bookSelectorState = .showingBooks // Reset state
+                                    }
+                                    // *** Call loadVerses after selecting a chapter ***
+                                    Task { 
+                                        await loadVerses() 
+                                    }
+                                }
+                        }
+                    }
+                    .frame(maxWidth: 300) // Limit grid width
+                }
             }
+            .padding(40)
+            // Center the VStack on the screen (already done by ZStack alignment)
         }
-        // Center the VStack on the screen
-        .frame(maxWidth: .infinity, maxHeight: .infinity) 
-        // Styling (similar to settings menu but distinct?)
-        // No explicit background needed if dimming layer is used
     }
     
     // Version Selector View Builder
@@ -312,8 +404,10 @@ struct BibleReadingView: View {
         switch action {
         case .copy:
             let selectedTexts = selectedVerseIndices.sorted().map { index in
-                guard index < chapterVerses.count else { return "" }
-                return "\(selectedBook) 1:\(index + 1) \(chapterVerses[index])"
+                guard index < currentVerses.count else { return "" } // Use currentVerses.count
+                // Construct string using BibleVerse properties
+                let verse = currentVerses[index]
+                return "\(verse.bookName) \(verse.chapterNumber):\(verse.verseNumber) \(verse.verseText)"
             }.joined(separator: "\n")
             UIPasteboard.general.string = selectedTexts
             print("Copied: \(selectedTexts)")
@@ -324,6 +418,31 @@ struct BibleReadingView: View {
             withAnimation { showNotesModal = true }
         default:
             print("Action \(action.rawValue) not yet implemented.")
+        }
+    }
+
+    // Function to fetch verses from Supabase
+    private func loadVerses() async {
+        isLoadingVerses = true
+        fetchError = nil // Clear previous errors
+        print("Attempting to load verses for: \(selectedBook) chapter \(selectedChapter)") // Debug print
+
+        do {
+            let fetchedVerses = try await BibleDataService.shared.fetchVerses(book: selectedBook, chapter: selectedChapter)
+            // Update on the main thread
+            await MainActor.run {
+                self.currentVerses = fetchedVerses
+                self.isLoadingVerses = false
+                 print("Successfully loaded \(fetchedVerses.count) verses.") // Debug print
+            }
+        } catch {
+            // Update on the main thread
+             await MainActor.run {
+                 print("Error loading verses: \(error.localizedDescription)") // Debug print
+                 self.fetchError = "Failed to load verses: \(error.localizedDescription)"
+                 self.isLoadingVerses = false
+                 self.currentVerses = [] // Clear verses on error
+             }
         }
     }
 }

@@ -78,8 +78,16 @@ struct NotesModalView: View {
         let sampleIndices = [0, 1, 5]
         let book = "Matthew"
         let chapter = 1
-        let verses = matthew1KJV // Use global sample
-        
+        // Replace placeholder with actual sample string array for preview
+        let verses: [String] = [
+            "The book of the generation of Jesus Christ, the son of David, the son of Abraham.",
+            "Abraham begat Isaac; and Isaac begat Jacob; and Jacob begat Judas and his brethren;",
+            "And Salmon begat Booz of Rachab; and Booz begat Obed of Ruth; and Obed begat Jesse;",
+            "And Jesse begat David the king; and David the king begat Solomon of her that had been the wife of Urias;",
+            "And Zorobabel begat Abiud; and Abiud begat Eliakim; and Eliakim begat Azor;",
+            "And Eliud begat Eleazar; and Eleazar begat Matthan; and Matthan begat Jacob;"
+        ]
+
         var body: some View {
             NotesModalView(
                 bookName: book,

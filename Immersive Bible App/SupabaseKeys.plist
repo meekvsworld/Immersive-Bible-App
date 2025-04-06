@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<!--
-   SupabaseKeys.plist
-   Immersive Bible App
-
-   Created by Miguelangelo Montemurro on 4/6/25.
-   Copyright (c) 2025 ___ORGANIZATIONNAME___. All rights reserved.
--->
 <plist version="1.0">
-<dict/>
+<dict>
+	<key>SUPABASE_KEY</key>
+	<string>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InduZWlranphb2xqc3Rkbnl5b2JlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM5MTA5OTIsImV4cCI6MjA1OTQ4Njk5Mn0.jHUBaopldyK93uaRtqC4Hkb_xU0uccB4Q8ezvFlJC24</string>
+	<key>SUPABASE_URL</key>
+	<string>https://wneikjzaoljstdnyyobe.supabase.co</string>
+</dict>
 </plist>

@@ -55,7 +55,7 @@ enum ReadingTheme {
 
 struct BibleTextDisplay: View {
     let chapterTitle: String
-    let verses: [String]
+    let verses: [BibleVerse]
     let bottomPadding: CGFloat
     
     // Bindings passed from parent
@@ -66,6 +66,8 @@ struct BibleTextDisplay: View {
     @Binding var selectedTranslation: String
     @Binding var showVersionSelector: Bool
     @Binding var selectedVerseIndices: Set<Int>
+    @Binding var selectedBook: String
+    let bookAbbreviations: [String: String]
     
     // Keep local state for things only this view manages
     @State private var scrollProgress: CGFloat = 0
@@ -105,9 +107,9 @@ struct BibleTextDisplay: View {
                     Button {
                         showBookSelector.toggle()
                     } label: {
-                        // You'll need a way to get the abbreviation for the selected book
-                        // For now, we'll hardcode "Matt" for demonstration
-                        Text("Matt") // Placeholder for book abbreviation
+                        // Display abbreviation based on selected book
+                        let abbreviation = bookAbbreviations[selectedBook] ?? selectedBook.prefix(4).description
+                        Text(abbreviation)
                             .font(.system(size: 14, weight: .medium))
                             .foregroundColor(currentTheme.textColor)
                     }
@@ -157,17 +159,17 @@ struct BibleTextDisplay: View {
                             
                             // Verses
                             LazyVStack(alignment: .leading, spacing: 12) {
-                                ForEach(Array(verses.enumerated()), id: \.offset) { index, verse in
+                                ForEach(verses) { verse in
                                     ZStack(alignment: .leading) {
                                         // Layer 1: Verse Number
-                                        Text("\(index + 1)")
+                                        Text("\(verse.verseNumber)")
                                             .font(.system(size: verseNumberFontSize))
                                             .foregroundColor(currentTheme.verseNumberColor)
                                             .frame(width: verseNumberReservedWidth, alignment: .leading) // Use constant
                                             .padding(.top, 14)
                                             
                                         // Layer 2: Verse Text Card
-                                        Text(verse)
+                                        Text(verse.verseText)
                                             .font(fontForCurrentStyle())
                                             .tracking(calculatedTracking())
                                             .lineSpacing(calculatedLineSpacing())
@@ -177,7 +179,7 @@ struct BibleTextDisplay: View {
                                             .padding(.vertical, 14)
                                             .frame(maxWidth: .infinity, alignment: .center)
                                             .background(
-                                                (selectedVerseIndices.contains(index) ? currentTheme.highlightColor : Color.clear)
+                                                (selectedVerseIndices.contains(verse.id) ? currentTheme.highlightColor : Color.clear)
                                                     .background(currentTheme.verseBoxBackgroundColor)
                                             )
                                             .cornerRadius(verseBoxCornerRadius)
@@ -186,14 +188,14 @@ struct BibleTextDisplay: View {
                                     }
                                     .contentShape(Rectangle())
                                     .onTapGesture { 
-                                        if selectedVerseIndices.contains(index) {
-                                            selectedVerseIndices.remove(index)
+                                        if selectedVerseIndices.contains(verse.id) {
+                                            selectedVerseIndices.remove(verse.id)
                                         } else {
-                                            selectedVerseIndices.insert(index)
+                                            selectedVerseIndices.insert(verse.id)
                                         }
                                     }
-                                    .id(index)
-                                    .padding(.top, isNewParagraph(index) ? 10 : 0)
+                                    .id(verse.id)
+                                    .padding(.top, verse.verseNumber == 1 ? 10 : 0)
                                 }
                             }
                             .padding(.horizontal, adaptiveHorizontalPadding(geometry.size.width))
@@ -228,6 +230,7 @@ struct BibleTextDisplay: View {
                 }
             }
             .background(currentTheme.backgroundColor)
+            .edgesIgnoringSafeArea(.bottom)
         }
     }
     
@@ -250,11 +253,6 @@ struct BibleTextDisplay: View {
         return max(8, width * 0.05)
     }
     
-    private func isNewParagraph(_ index: Int) -> Bool {
-        // --- Placeholder Logic --- 
-        return index == 2
-    }
-    
     private func cycleTheme() {
         switch currentTheme {
         case .light: currentTheme = .dark
@@ -273,48 +271,28 @@ struct BibleTextDisplay: View {
     }
 }
 
-// Data for Preview
-let matthew1KJV = [
-    "The book of the generation of Jesus Christ, the son of David, the son of Abraham.", // 1
-    "Abraham begat Isaac; and Isaac begat Jacob; and Jacob begat Judas and his brethren;", // 2
-    "And Judas begat Phares and Zara of Thamar; and Phares begat Esrom; and Esrom begat Aram;", // 3
-    "And Aram begat Aminadab; and Aminadab begat Naasson; and Naasson begat Salmon;", // 4
-    "And Salmon begat Booz of Rachab; and Booz begat Obed of Ruth; and Obed begat Jesse;", // 5
-    "And Jesse begat David the king; and David the king begat Solomon of her that had been the wife of Urias;", // 6
-    "And Solomon begat Roboam; and Roboam begat Abia; and Abia begat Asa;", // 7
-    "And Asa begat Josaphat; and Josaphat begat Joram; and Joram begat Ozias;", // 8
-    "And Ozias begat Joatham; and Joatham begat Achaz; and Achaz begat Ezekias;", // 9
-    "And Ezekias begat Manasses; and Manasses begat Amon; and Amon begat Josias;", // 10
-    "And Josias begat Jechonias and his brethren, about the time they were carried away to Babylon:", // 11
-    "And after they were brought to Babylon, Jechonias begat Salathiel; and Salathiel begat Zorobabel;", // 12
-    "And Zorobabel begat Abiud; and Abiud begat Eliakim; and Eliakim begat Azor;", // 13
-    "And Azor begat Sadoc; and Sadoc begat Achim; and Achim begat Eliud;", // 14
-    "And Eliud begat Eleazar; and Eleazar begat Matthan; and Matthan begat Jacob;", // 15
-    "And Jacob begat Joseph the husband of Mary, of whom was born Jesus, who is called Christ.", // 16
-    "So all the generations from Abraham to David are fourteen generations; and from David until the carrying away into Babylon are fourteen generations; and from the carrying away into Babylon unto Christ are fourteen generations.", // 17
-    "Now the birth of Jesus Christ was on this wise: When as his mother Mary was espoused to Joseph, before they came together, she was found with child of the Holy Ghost.", // 18
-    "Then Joseph her husband, being a just man, and not willing to make her a public example, was minded to put her away privily.", // 19
-    "But while he thought on these things, behold, the angel of the Lord appeared unto him in a dream, saying, Joseph, thou son of David, fear not to take unto thee Mary thy wife: for that which is conceived in her is of the Holy Ghost.", // 20
-    "And she shall bring forth a son, and thou shalt call his name JESUS: for he shall save his people from their sins.", // 21
-    "Now all this was done, that it might be fulfilled which was spoken of the Lord by the prophet, saying,", // 22
-    "Behold, a virgin shall be with child, and shall bring forth a son, and they shall call his name Emmanuel, which being interpreted is, God with us.", // 23
-    "Then Joseph being raised from sleep did as the angel of the Lord had bidden him, and took unto him his wife:", // 24
-    "And knew her not till she had brought forth her firstborn son: and he called his name JESUS." // 25
-]
-
+// Preview needs updating
 #Preview {
-    StatefulPreviewWrapper_BibleText { $fontSize, $useSerifFont, $theme, $showBookSelector, $selectedTranslation, $showVersionSelector, $selectedVerseIndices in
+    // Provide sample BibleVerse data
+    let sampleVerseObjects = [
+        BibleVerse(id: 1, bookName: "Matthew", chapterNumber: 1, verseNumber: 1, verseText: "The book of the generation of Jesus Christ, the son of David, the son of Abraham."),
+        BibleVerse(id: 2, bookName: "Matthew", chapterNumber: 1, verseNumber: 2, verseText: "Abraham begat Isaac; and Isaac begat Jacob; and Jacob begat Judas and his brethren;")
+    ]
+    
+    StatefulPreviewWrapper_BibleText(bookAbbreviations: ["Matthew": "Matt", "Genesis": "Gen"]) { $fontSize, $useSerifFont, $theme, $showBookSelector, $selectedTranslation, $showVersionSelector, $selectedVerseIndices, $selectedBook, bookAbbreviations in
         BibleTextDisplay(
             chapterTitle: "Matthew 1",
-            verses: matthew1KJV,
-            bottomPadding: 80,
+            verses: sampleVerseObjects, // Pass [BibleVerse]
+            bottomPadding: 50, // Example padding
             fontSize: $fontSize,
             useSerifFont: $useSerifFont,
             currentTheme: $theme,
             showBookSelector: $showBookSelector,
             selectedTranslation: $selectedTranslation,
             showVersionSelector: $showVersionSelector,
-            selectedVerseIndices: $selectedVerseIndices
+            selectedVerseIndices: $selectedVerseIndices, // Use verse IDs now
+            selectedBook: $selectedBook,
+            bookAbbreviations: bookAbbreviations 
         )
     }
 }
@@ -328,9 +306,17 @@ struct StatefulPreviewWrapper_BibleText<Content: View>: View {
     @State private var selectedTranslation: String = "KJV"
     @State private var showVersionSelector: Bool = false
     @State private var selectedVerseIndices: Set<Int> = []
-    var content: (Binding<CGFloat>, Binding<Bool>, Binding<ReadingTheme>, Binding<Bool>, Binding<String>, Binding<Bool>, Binding<Set<Int>>) -> Content
+    @State private var selectedBook: String = "Matthew"
+    let bookAbbreviations: [String: String]
+    var content: (Binding<CGFloat>, Binding<Bool>, Binding<ReadingTheme>, Binding<Bool>, Binding<String>, Binding<Bool>, Binding<Set<Int>>, Binding<String>, [String: String]) -> Content
 
     var body: some View {
-        content($fontSize, $useSerifFont, $currentTheme, $showBookSelector, $selectedTranslation, $showVersionSelector, $selectedVerseIndices)
+        content($fontSize, $useSerifFont, $currentTheme, $showBookSelector, $selectedTranslation, $showVersionSelector, $selectedVerseIndices, $selectedBook, bookAbbreviations)
     }
-} 
+}
+
+// Remove the old sample string data if no longer needed
+// let matthew1KJV: [String] = [ ... ]
+
+// Remove old sampleVersesForBookChapter function if BibleReadingView doesn't use it for preview
+// func sampleVersesForBookChapter(book: String, chapter: Int) -> [String] { ... } 
